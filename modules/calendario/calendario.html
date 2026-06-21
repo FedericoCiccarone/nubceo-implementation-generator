@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+
+html,body{
+
+    width:1920px;
+    height:1080px;
+
+    margin:0;
+    padding:0;
+
+    font-family:Arial, sans-serif;
+
+    overflow:hidden;
+
+}
+
+
+.page{
+
+    width:100%;
+    height:100%;
+
+    padding:70px 110px;
+
+}
+
+
+/* HEADER */
+
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+
+}
+
+
+.title{
+
+    font-size:72px;
+    font-weight:bold;
+    letter-spacing:7px;
+
+    color:#1268e8;
+
+}
+
+
+.subtitle{
+
+    margin-top:20px;
+
+    font-size:28px;
+
+}
+
+
+.periodo{
+
+    margin-top:10px;
+
+    font-size:26px;
+
+    color:#374151;
+
+}
+
+
+.logo{
+
+    font-size:60px;
+    font-weight:bold;
+
+    color:#1268e8;
+
+    text-align:center;
+
+}
+
+
+.gantt-title{
+
+    font-size:28px;
+
+    margin-top:20px;
+
+}
+
+
+
+/* CALENDARIO */
+
+
+.calendar{
+
+    margin-top:55px;
+
+    display:grid;
+
+    grid-template-columns:240px repeat(8,1fr);
+
+    gap:8px;
+
+}
+
+
+
+.week-title{
+
+    height:35px;
+
+    font-size:26px;
+
+    font-weight:bold;
+
+    color:#1268e8;
+
+    text-align:center;
+
+}
+
+
+
+.week-date{
+
+    height:65px;
+
+    background:#1268e8;
+
+    color:white;
+
+    font-size:20px;
+    font-weight:500;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    white-space:nowrap;
+
+}
+
+
+
+.task{
+
+    height:72px;
+
+    background:#1268e8;
+
+    color:white;
+
+    font-size:24px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+}
+
+
+
+.cell{
+
+    height:72px;
+
+    background:#dbe8f7;
+
+    position:relative;
+
+}
+
+
+
+.bar{
+
+    height:28px;
+
+    background:#1268e8;
+
+    position:absolute;
+
+    top:22px;
+
+    left:0;
+    right:0;
+
+    border-radius:3px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+<!-- ENCABEZADO -->
+
+
+<div class="header">
+
+
+<div>
+
+
+<div class="title">
+
+Calendario de Proyecto
+
+</div>
+
+
+<div class="subtitle">
+
+Implementación Conciliador transaccional {{cliente}}
+
+</div>
+
+
+<div class="periodo">
+
+{{periodo}}
+
+</div>
+
+
+</div>
+
+
+
+<div>
+
+
+<div class="logo">
+
+nubceo
+
+</div>
+
+
+<div class="gantt-title">
+
+Diagrama de Gantt
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- CALENDARIO -->
+
+
+<div class="calendar">
+
+
+
+<div></div>
+
+
+{% for s in semanas %}
+
+<div class="week-title">
+
+Semana {{s.semana}}
+
+</div>
+
+{% endfor %}
+
+
+
+<div></div>
+
+
+
+{% for s in semanas %}
+
+<div class="week-date">
+
+{{s.inicio}} - {{s.fin}}
+
+</div>
+
+{% endfor %}
+
+
+
+
+{% set tareas=[
+'FORMULARIO<br>RELEVAMIENTO',
+'WORKSHOP',
+'SUCURSALES',
+tipo_integracion,
+'VALIDACIONES',
+'PRUEBAS',
+'GOLIVE'
+]%}
+
+
+
+
+{% for tarea in tareas %}
+
+
+
+<div class="task">
+
+{{tarea}}
+
+</div>
+
+
+
+
+{% for s in semanas %}
+
+
+
+<div class="cell">
+
+
+
+{% if
+(tarea.startswith('FORMULARIO') and s.semana in [1,2])
+or
+(tarea=='WORKSHOP' and s.semana==2)
+or
+(tarea=='SUCURSALES' and s.semana in [2,3])
+or
+(tarea in ['CSV','API'] and s.semana in [2,3])
+or
+(tarea=='VALIDACIONES' and s.semana in [4,5])
+or
+(tarea=='PRUEBAS' and s.semana in [6,7])
+or
+(tarea=='GOLIVE' and s.semana in [7,8])
+%}
+
+
+<div class="bar"></div>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+
+</html>
