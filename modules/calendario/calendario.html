@@ -100,6 +100,7 @@ html,body{
 
 
 
+
 /* CALENDARIO */
 
 
@@ -206,6 +207,37 @@ html,body{
 }
 
 
+
+/* OBSERVACIONES */
+
+
+.observaciones{
+
+    position:absolute;
+
+    bottom:35px;
+
+    left:110px;
+
+    right:110px;
+
+    background:white;
+
+    border-radius:14px;
+
+    padding:18px 28px;
+
+    font-size:20px;
+
+    color:#111827;
+
+    box-shadow:
+        0px 6px 18px rgba(0,0,0,0.18);
+
+}
+
+
+
 </style>
 
 </head>
@@ -215,6 +247,7 @@ html,body{
 
 
 <div class="page">
+
 
 
 <!-- ENCABEZADO -->
@@ -251,6 +284,7 @@ Implementación Conciliador transaccional {{cliente}}
 
 
 
+
 <div>
 
 
@@ -276,6 +310,7 @@ Diagrama de Gantt
 
 
 
+
 <!-- CALENDARIO -->
 
 
@@ -288,13 +323,17 @@ Diagrama de Gantt
 
 {% for s in semanas %}
 
+
 <div class="week-title">
 
 Semana {{s.semana}}
 
 </div>
 
+
 {% endfor %}
+
+
 
 
 
@@ -304,11 +343,13 @@ Semana {{s.semana}}
 
 {% for s in semanas %}
 
+
 <div class="week-date">
 
 {{s.inicio}} - {{s.fin}}
 
 </div>
+
 
 {% endfor %}
 
@@ -316,14 +357,24 @@ Semana {{s.semana}}
 
 
 {% set tareas=[
+
 'FORMULARIO<br>RELEVAMIENTO',
+
 'WORKSHOP',
+
 'SUCURSALES',
+
 tipo_integracion,
+
 'VALIDACIONES',
+
 'PRUEBAS',
+
 'GOLIVE'
-]%}
+
+] %}
+
+
 
 
 
@@ -350,30 +401,48 @@ tipo_integracion,
 
 
 {% if
+
 (tarea.startswith('FORMULARIO') and s.semana in [1,2])
+
 or
+
 (tarea=='WORKSHOP' and s.semana==2)
+
 or
+
 (tarea=='SUCURSALES' and s.semana in [2,3])
+
 or
+
 (tarea in ['CSV','API'] and s.semana in [2,3])
+
 or
+
 (tarea=='VALIDACIONES' and s.semana in [4,5])
+
 or
+
 (tarea=='PRUEBAS' and s.semana in [6,7])
+
 or
+
 (tarea=='GOLIVE' and s.semana in [7,8])
+
 %}
 
 
+
 <div class="bar"></div>
+
 
 
 {% endif %}
 
 
 
+
 </div>
+
 
 
 
@@ -385,7 +454,40 @@ or
 
 
 
+
 </div>
+
+
+
+
+<!-- OBSERVACIONES -->
+
+
+{% if observaciones %}
+
+
+<div class="observaciones">
+
+
+<strong>
+
+Observaciones:
+
+</strong>
+
+
+<br>
+
+
+{{observaciones}}
+
+
+</div>
+
+
+{% endif %}
+
+
 
 
 </div>

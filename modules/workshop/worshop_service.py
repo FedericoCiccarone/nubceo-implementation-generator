@@ -6,27 +6,70 @@ def generar_resumen_workshop(
     procesadores,
     conciliacion,
     tareas_manuales,
-    problemas
+    criterios_conciliacion,
+    frecuencia_actual,
+    tiempo_conciliacion,
+    frecuencia_deseada,
+    porcentaje_conciliacion,
+    no_conciliado,
+    problemas,
+    observaciones
 ):
 
 
     datos = {
 
+
         "cliente": cliente,
+
 
         "canales": canales,
 
+
         "erp": erp,
+
 
         "origen_ventas": origen_ventas,
 
+
         "procesadores": procesadores,
+
 
         "conciliacion": conciliacion,
 
+
         "tareas_manuales": tareas_manuales,
 
-        "problemas": problemas
+
+        "resultado_conciliacion": {
+
+
+            "criterios": criterios_conciliacion,
+
+
+            "frecuencia_actual": frecuencia_actual,
+
+
+            "tiempo": tiempo_conciliacion,
+
+
+            "frecuencia_deseada": frecuencia_deseada,
+
+
+            "porcentaje": porcentaje_conciliacion,
+
+
+            "no_conciliado": no_conciliado
+
+
+        },
+
+
+        "problemas": problemas,
+
+
+        "observaciones": observaciones
+
 
     }
 

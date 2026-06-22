@@ -11,13 +11,8 @@ from modules.calendario.calendario_service import (
     generar_periodo
 )
 
-
 from modules.calendario.pdf_service import (
     generar_pdf
-)
-
-from modules.workshop.pdf_service import (
-    generar_pdf_workshop
 )
 
 
@@ -29,10 +24,14 @@ from modules.workshop.worshop_service import (
     generar_resumen_workshop
 )
 
+from modules.workshop.pdf_service import (
+    generar_pdf_workshop
+)
+
 
 
 # ============================
-# CONFIG APP
+# CONFIG
 # ============================
 
 st.set_page_config(
@@ -56,11 +55,9 @@ opcion = st.sidebar.radio(
 
 
 
-
 # ==================================================
-# MODULO CALENDARIO
+# CALENDARIO
 # ==================================================
-
 
 if opcion == "Calendario Implementación":
 
@@ -90,6 +87,12 @@ if opcion == "Calendario Implementación":
     )
 
 
+    observaciones = st.text_area(
+        "Observaciones / Comentarios",
+        placeholder="Ingrese aclaraciones del proyecto..."
+    )
+
+
 
     if st.button(
         "Generar calendario"
@@ -100,7 +103,7 @@ if opcion == "Calendario Implementación":
 
 
             st.error(
-                "La implementación debe iniciar un día hábil"
+                "Debe iniciar un día hábil"
             )
 
 
@@ -117,11 +120,22 @@ if opcion == "Calendario Implementación":
             )
 
 
-            pdf = generar_pdf(
-                cliente,
-                semanas,
-                tipo_integracion,
-                periodo
+            with st.spinner(
+                "Generando calendario de implementación..."
+            ):
+
+
+                pdf = generar_pdf(
+                    cliente,
+                    semanas,
+                    tipo_integracion,
+                    periodo,
+                    observaciones
+                )
+
+
+            st.success(
+                "Calendario generado correctamente"
             )
 
 
@@ -134,20 +148,15 @@ if opcion == "Calendario Implementación":
                 st.download_button(
                     "Descargar calendario PDF",
                     archivo,
-                    file_name=(
-                        f"Calendario Implementación - "
-                        f"{cliente} - {tipo_integracion}.pdf"
-                    )
+                    file_name=f"Calendario - {cliente}.pdf"
                 )
 
 
 
 
-
 # ==================================================
-# MODULO WORKSHOP
+# WORKSHOP
 # ==================================================
-
 
 if opcion == "Workshop Implementación":
 
@@ -156,10 +165,6 @@ if opcion == "Workshop Implementación":
         "Workshop Implementación Nubceo"
     )
 
-
-    # ----------------------------
-    # DATOS CLIENTE
-    # ----------------------------
 
 
     cliente = st.text_input(
@@ -193,10 +198,6 @@ if opcion == "Workshop Implementación":
     )
 
 
-    # ----------------------------
-    # PROCESADORES
-    # ----------------------------
-
 
     st.subheader(
         "Procesadores de pago"
@@ -223,7 +224,7 @@ if opcion == "Workshop Implementación":
 
 
         metodo = st.selectbox(
-            f"¿Cómo obtiene información de {procesador}?",
+            f"Obtención información {procesador}",
             [
                 "Portal",
                 "CSV",
@@ -241,10 +242,6 @@ if opcion == "Workshop Implementación":
             }
         )
 
-
-    # ----------------------------
-    # CONCILIACION ACTUAL
-    # ----------------------------
 
 
     st.subheader(
@@ -275,21 +272,96 @@ if opcion == "Workshop Implementación":
     )
 
 
-    problemas = st.multiselect(
-        "Problemas actuales",
+
+    criterios_conciliacion = st.multiselect(
+        "Criterios de conciliación",
         [
-            "Trabajo manual",
-            "Demora operativa",
-            "Errores de conciliación",
-            "Falta de visibilidad",
-            "Diferencias sin resolver"
+            "NO CONCILIAMOS",
+            "NO TENEMOS",
+            "ID transacción",
+            "Cupón",
+            "Lote",
+            "Terminal",
+            "Sucursal",
+            "Fecha",
+            "Monto exacto",
+            "Monto con tolerancia",
+            "Autorización",
+            "Últimos dígitos tarjeta",
+            "Otro"
         ]
     )
 
 
-    # ----------------------------
-    # GENERAR WORKSHOP
-    # ----------------------------
+    frecuencia_actual = st.selectbox(
+        "Frecuencia actual",
+        [
+            "No conciliamos",
+            "Diaria",
+            "Semanal",
+            "Mensual"
+        ]
+    )
+
+
+    tiempo_conciliacion = st.selectbox(
+        "Tiempo de conciliación",
+        [
+            "No aplica",
+            "Menos de 1 hora",
+            "1 a 4 horas",
+            "1 día",
+            "2 a 5 días",
+            "Más de una semana"
+        ]
+    )
+
+
+    frecuencia_deseada = st.selectbox(
+        "Frecuencia deseada",
+        [
+            "Tiempo real",
+            "Diaria automática",
+            "Semanal automática"
+        ]
+    )
+
+
+    porcentaje_conciliacion = st.slider(
+        label="Porcentaje conciliado",
+        min_value=0,
+        max_value=100,
+        value=80,
+        step=5
+    )
+
+
+    no_conciliado = st.multiselect(
+        "¿Qué ocurre con lo no conciliado?",
+        [
+            "Queda pendiente",
+            "Revisión manual",
+            "Ajuste contable",
+            "No se analiza"
+        ]
+    )
+
+
+    problemas = st.multiselect(
+        "Problemas actuales",
+        [
+            "Trabajo manual",
+            "Errores de conciliación",
+            "Falta de visibilidad",
+            "Demora operativa"
+        ]
+    )
+
+
+    observaciones = st.text_area(
+        "Observaciones del Workshop"
+    )
+
 
 
     if st.button(
@@ -305,12 +377,29 @@ if opcion == "Workshop Implementación":
             detalle_procesadores,
             conciliacion,
             tareas_manuales,
-            problemas
+            criterios_conciliacion,
+            frecuencia_actual,
+            tiempo_conciliacion,
+            frecuencia_deseada,
+            porcentaje_conciliacion,
+            no_conciliado,
+            problemas,
+            observaciones
         )
 
 
-        pdf = generar_pdf_workshop(
-            datos
+        with st.spinner(
+            "Generando Workshop Nubceo..."
+        ):
+
+
+            pdf = generar_pdf_workshop(
+                datos
+            )
+
+
+        st.success(
+            "Workshop generado correctamente"
         )
 
 
@@ -323,7 +412,5 @@ if opcion == "Workshop Implementación":
             st.download_button(
                 "Descargar Workshop PDF",
                 archivo,
-                file_name=(
-                    f"Workshop - {cliente}.pdf"
-                )
+                file_name=f"Workshop - {cliente}.pdf"
             )

@@ -196,6 +196,7 @@ body {
 
 
 
+
 /* LOWER AREA */
 
 
@@ -274,6 +275,42 @@ body {
 
 
 
+/* OBSERVACIONES */
+
+
+.observaciones {
+
+    margin-top:25px;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:
+        0px 8px 25px rgba(0,0,0,.12);
+
+    font-size:17px;
+
+}
+
+
+
+.observaciones-title {
+
+    color:#1268e8;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
+
+
+
 </style>
 
 
@@ -285,6 +322,7 @@ body {
 
 
 <div class="container">
+
 
 
 <!-- HEADER -->
@@ -339,7 +377,7 @@ nubceo
 
 
 
-<!-- VENTA -->
+<!-- ORIGEN -->
 
 
 <div class="stage">
@@ -377,11 +415,13 @@ nubceo
 
 
 
+
 <div class="arrow">
 
 →
 
 </div>
+
 
 
 
@@ -408,11 +448,15 @@ nubceo
 
 <div class="processor">
 
+
 <b>{{p.nombre}}</b>
+
 
 <br>
 
+
 Obtención: {{p.conexion}}
+
 
 </div>
 
@@ -430,12 +474,12 @@ Obtención: {{p.conexion}}
 
 
 
+
 <div class="arrow">
 
 →
 
 </div>
-
 
 
 
@@ -470,6 +514,7 @@ Conciliación
 
 
 </div>
+
 
 
 
@@ -509,15 +554,16 @@ Validación
 
 Reportes
 
+
+</div>
+
+
 </div>
 
 
 
 </div>
 
-
-
-</div>
 
 
 
@@ -593,6 +639,34 @@ Dolores / Problemas actuales
 
 
 </div>
+
+
+
+
+
+<!-- OBSERVACIONES -->
+
+
+{% if datos.observaciones %}
+
+
+<div class="observaciones">
+
+
+<div class="observaciones-title">
+
+Observaciones del consultor
+
+</div>
+
+
+{{datos.observaciones}}
+
+
+</div>
+
+
+{% endif %}
 
 
 
